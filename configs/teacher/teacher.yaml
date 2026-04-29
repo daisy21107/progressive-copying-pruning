@@ -1,0 +1,19 @@
+seed: 42
+device: auto
+out_dir: runs/teacher
+
+data:
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  label_rule: parity  # parity | sum_mod10 | left_gt_right
+  pairing: static  # static | dynamic
+  data_seed: 12345
+
+model:
+  width: 32
+  hidden: 128
+  shared_encoder: true
+
+lr: 0.001
+epochs: 5
