@@ -1,0 +1,23 @@
+QUICK RESULTS (40 EPOCHS)
+
+DENSE:
+  Seed 0: 78.71%  CKA=0.968
+  Seed 1: 79.29%  CKA=0.986
+  Seed 2: 79.64%  CKA=0.973
+  Mean:   79.2 ± 0.5%
+
+PROGRESSIVE:
+  Seed 0: 79.43%  CKA=0.968
+  Seed 1: 79.71%  CKA=0.975
+  Seed 2: 79.29%  CKA=0.971
+  Mean:   79.5 ± 0.2%
+
+ONE-SHOT:
+  Seed 0: 75.71%  CKA=0.966
+  Seed 1: 73.93%  CKA=0.960
+  Seed 2: 72.07%  CKA=0.955
+  Mean:   73.9 ± 1.8%
+
+KEY FINDING:
+Progressive (79.5%) ≈ Dense (79.2%) despite 90% sparsity!
+One-shot broken due to sudden pruning without fine-tuning.

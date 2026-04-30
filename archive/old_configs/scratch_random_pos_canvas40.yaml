@@ -1,0 +1,31 @@
+seed: 42
+device: auto
+out_dir: runs/scratch_random_pos_canvas40
+
+data:
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  label_rule: parity
+  pairing: static
+  data_seed: 12345
+  random_position: true
+  canvas_size: 40
+  bg_noise_std: 0.0
+
+model:
+  width: 16
+  hidden: 64
+  shared_encoder: true
+
+training:
+  num_epochs: 5
+  optimizer: adam
+  lr: 0.001
+  weight_decay: 0.0
+
+distillation:
+  enabled: false
+
+pruning:
+  enabled: false

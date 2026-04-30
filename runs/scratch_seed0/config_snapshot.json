@@ -1,0 +1,25 @@
+{
+  "seed": 0,
+  "device": "auto",
+  "out_dir": "runs/scratch_noise0.15_canvas34",
+  "data": {
+    "root": "./data",
+    "batch_size": 128,
+    "num_workers": 0,
+    "label_rule": "parity",
+    "pairing": "static",
+    "data_seed": 12345,
+    "random_position": true,
+    "canvas_size": 34,
+    "noise_std": 0.15,
+    "noise_mode": "fixed",
+    "noise_seed": 2026
+  },
+  "model": {
+    "width": 16,
+    "hidden": 64,
+    "shared_encoder": true
+  },
+  "lr": 0.001,
+  "epochs": 5
+}

@@ -1,0 +1,40 @@
+seed: 42
+device: auto
+out_dir: runs/progressive_cifar100
+data:
+  task: cifar100_binary_pairs
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  label_rule: parity
+  pairing: static
+  data_seed: 12345
+  noise_std: 0.0
+  noise_mode: fixed
+  noise_seed: 2026
+teacher_ckpt: runs/cifar_teacher_final/teacher.pt
+teacher_model:
+  in_channels: 3
+  width: 16
+  hidden: 64
+  shared_encoder: true
+student_model:
+  in_channels: 3
+  width: 16
+  hidden: 64
+  shared_encoder: true
+lr: 0.001
+epochs: 20
+temperature: 2.0
+progressive:
+  prune_per_epoch: 0.05
+  target_sparsity: 0.9
+  rerandomize: false
+  fixed_target_sparsity: true
+  prune_milestones:
+  - epoch: 5
+    target_sparsity: 0.297
+  - epoch: 10
+    target_sparsity: 0.594
+  - epoch: 15
+    target_sparsity: 0.9

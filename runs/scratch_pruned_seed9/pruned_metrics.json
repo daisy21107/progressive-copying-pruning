@@ -1,0 +1,22 @@
+{
+  "checkpoint": "experiments/cifar_final/runs/scratch_noise0.200_seed9/teacher.pt",
+  "config": "configs/scratch_cifar100.yaml",
+  "teacher_ckpt": "experiments/cifar_final/runs/cifar_teacher_final/teacher.pt",
+  "target_sparsity": 0.9672619047619048,
+  "pre_prune": {
+    "val_acc": 0.7371428571428571,
+    "actual_sparsity": 0.0,
+    "val_kl": 0.04039641639048403,
+    "val_logit_mse": 0.2839532900940288,
+    "val_prob_mse": 0.016253020529719917,
+    "val_agree": 0.8529356067830866
+  },
+  "post_prune": {
+    "val_acc": 0.5535714285714286,
+    "actual_sparsity": 0.9672619047619048,
+    "val_kl": 0.20782099935141476,
+    "val_logit_mse": 0.825149265202609,
+    "val_prob_mse": 0.08980477398092096,
+    "val_agree": 0.5081912875175476
+  }
+}

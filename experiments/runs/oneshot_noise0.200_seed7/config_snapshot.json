@@ -1,0 +1,33 @@
+{
+  "data": {
+    "batch_size": 128,
+    "data_seed": 12345,
+    "label_rule": "parity",
+    "noise_mode": "fixed",
+    "noise_seed": 2026,
+    "noise_std": 0.2,
+    "num_workers": 0,
+    "pairing": "static",
+    "root": "./data",
+    "task": "cifar100_binary_pairs"
+  },
+  "device": "auto",
+  "epochs": 5,
+  "lr": 0.001,
+  "out_dir": "runs/oneshot_cifar100",
+  "seed": 7,
+  "student_model": {
+    "hidden": 64,
+    "in_channels": 3,
+    "shared_encoder": true,
+    "width": 16
+  },
+  "teacher_ckpt": "runs/cifar_teacher_final/teacher.pt",
+  "teacher_model": {
+    "hidden": 64,
+    "in_channels": 3,
+    "shared_encoder": true,
+    "width": 16
+  },
+  "temperature": 2.0
+}

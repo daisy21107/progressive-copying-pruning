@@ -1,0 +1,22 @@
+{
+  "checkpoint": "experiments/cifar_final/runs/oneshot_noise0.200_seed8/student.pt",
+  "config": "configs/oneshot_cifar100.yaml",
+  "teacher_ckpt": "experiments/cifar_final/runs/cifar_teacher_final/teacher.pt",
+  "target_sparsity": 0.9672619047619048,
+  "pre_prune": {
+    "val_acc": 0.6885714285714286,
+    "actual_sparsity": 0.0,
+    "val_kl": 0.10944250971078873,
+    "val_logit_mse": 0.5823372439904646,
+    "val_prob_mse": 0.012627605602822521,
+    "val_agree": 0.7642992409792814
+  },
+  "post_prune": {
+    "val_acc": 0.5921428571428572,
+    "actual_sparsity": 0.9672619047619048,
+    "val_kl": 0.29395664821971546,
+    "val_logit_mse": 0.7903413339094683,
+    "val_prob_mse": 0.03421309234743768,
+    "val_agree": 0.6248106035319242
+  }
+}

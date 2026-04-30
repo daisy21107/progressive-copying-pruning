@@ -1,0 +1,25 @@
+seed: 42
+device: auto
+out_dir: runs/scratch
+
+data:
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  label_rule: parity
+  pairing: static
+  data_seed: 12345
+
+model:
+  width: 32
+  hidden: 128
+  shared_encoder: true
+
+lr: 0.001
+epochs: 5
+
+posthoc_prune:
+  enabled: true
+  target_sparsity: 0.90
+  fixed_target_sparsity: true
+  rerandomize: false

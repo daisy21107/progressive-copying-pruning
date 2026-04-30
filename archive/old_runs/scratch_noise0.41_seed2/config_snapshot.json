@@ -1,0 +1,23 @@
+{
+  "data": {
+    "batch_size": 128,
+    "data_seed": 12345,
+    "label_rule": "parity",
+    "noise_mode": "fixed",
+    "noise_seed": 2026,
+    "noise_std": 0.41,
+    "num_workers": 0,
+    "pairing": "static",
+    "root": "./data"
+  },
+  "device": "auto",
+  "epochs": 5,
+  "lr": 0.001,
+  "model": {
+    "hidden": 64,
+    "shared_encoder": true,
+    "width": 16
+  },
+  "out_dir": "runs/scratch_noise0.40",
+  "seed": 2
+}

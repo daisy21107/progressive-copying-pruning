@@ -1,0 +1,30 @@
+seed: 0
+device: auto
+out_dir: runs/progressive_seed0
+
+data:
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  label_rule: parity
+
+teacher_ckpt: runs/teacher/teacher.pt
+
+teacher_model:
+  width: 32
+  hidden: 128
+  shared_encoder: true
+
+student_model:
+  width: 16
+  hidden: 64
+  shared_encoder: true
+
+lr: 0.001
+epochs: 10
+temperature: 2.0
+
+progressive:
+  prune_per_epoch: 0.05
+  target_sparsity: 0.90
+  rerandomize: false

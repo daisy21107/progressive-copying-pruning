@@ -1,0 +1,32 @@
+[
+  {
+    "noise_std": 0.0,
+    "run_dir": "runs/scratch_noise0.000_seed0",
+    "status": "done",
+    "val_acc": 0.7679924260486256
+  },
+  {
+    "noise_std": 0.1,
+    "run_dir": "runs/scratch_noise0.100_seed0",
+    "status": "done",
+    "val_acc": 0.768560604615645
+  },
+  {
+    "noise_std": 0.2,
+    "run_dir": "runs/scratch_noise0.200_seed0",
+    "status": "done",
+    "val_acc": 0.7500473477623679
+  },
+  {
+    "noise_std": 0.3,
+    "run_dir": "runs/scratch_noise0.300_seed0",
+    "status": "done",
+    "val_acc": 0.7308712113987316
+  },
+  {
+    "noise_std": 0.4,
+    "run_dir": "runs/scratch_noise0.400_seed0",
+    "status": "done",
+    "val_acc": 0.7350852272727273
+  }
+]

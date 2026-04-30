@@ -1,0 +1,22 @@
+seed: 42
+device: auto
+out_dir: runs/teacher_noise0.40
+
+data:
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  label_rule: parity
+  pairing: static
+  data_seed: 12345
+  noise_std: 0.40
+  noise_mode: fixed
+  noise_seed: 2026
+
+model:
+  width: 32
+  hidden: 128
+  shared_encoder: true
+
+lr: 0.001
+epochs: 5

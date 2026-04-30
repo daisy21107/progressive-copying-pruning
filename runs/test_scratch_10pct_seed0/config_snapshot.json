@@ -1,0 +1,25 @@
+{
+  "seed": 0,
+  "device": "auto",
+  "out_dir": "runs/scratch_cifar100",
+  "data": {
+    "task": "cifar100_binary_pairs",
+    "root": "./data",
+    "batch_size": 128,
+    "num_workers": 0,
+    "label_rule": "parity",
+    "pairing": "static",
+    "data_seed": 12345,
+    "noise_std": 0.0,
+    "noise_mode": "fixed",
+    "noise_seed": 2026
+  },
+  "model": {
+    "in_channels": 3,
+    "width": 5,
+    "hidden": 20,
+    "shared_encoder": true
+  },
+  "lr": 0.001,
+  "epochs": 20
+}
