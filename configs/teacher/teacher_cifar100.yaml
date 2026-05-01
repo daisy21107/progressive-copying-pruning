@@ -22,4 +22,4 @@ model:
   shared_encoder: true
 
 lr: 0.001
-epochs: 30
+epochs: 15
