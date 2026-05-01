@@ -17,9 +17,9 @@ data:
 
 model:
   in_channels: 3
-  width: 16
-  hidden: 64
+  width: 32
+  hidden: 128
   shared_encoder: true
 
 lr: 0.001
-epochs: 10
+epochs: 30
