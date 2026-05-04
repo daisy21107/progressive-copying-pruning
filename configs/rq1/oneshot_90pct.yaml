@@ -15,7 +15,7 @@ data:
   noise_seed: 2026
   label_noise: 0.10
 
-teacher_ckpt: runs/cifar_teacher_final/teacher.pt
+teacher_ckpt: runs/teacher_cifar100/teacher.pt
 
 teacher_model:
   in_channels: 3
