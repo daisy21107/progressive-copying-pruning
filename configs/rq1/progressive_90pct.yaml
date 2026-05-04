@@ -1,6 +1,6 @@
 seed: 42
 device: auto
-out_dir: runs/progressive_90pct_rq1
+out_dir: runs/progressive_90pct
 
 data:
   task: cifar100_binary_pairs
@@ -13,7 +13,6 @@ data:
   noise_std: 0.0
   noise_mode: fixed
   noise_seed: 2026
-  label_noise: 0.10
 
 teacher_ckpt: runs/teacher_cifar100/teacher.pt
 
