@@ -11,6 +11,9 @@ data:
   pairing: static
   data_seed: 12345
   noise_std: 0.0
+  noise_mode: fixed
+  noise_seed: 2026
+  label_noise: 0.10
 
 teacher_ckpt: runs/cifar_teacher_final/teacher.pt
 
@@ -22,8 +25,8 @@ teacher_model:
 
 student_model:
   in_channels: 3
-  width: 16
-  hidden: 64
+  width: 32
+  hidden: 128
   shared_encoder: true
 
 lr: 0.001
