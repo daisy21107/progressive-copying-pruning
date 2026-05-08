@@ -1,6 +1,6 @@
 seed: 42
 device: auto
-out_dir: runs/teacher_convergence_30ep
+out_dir: runs/teacher_cifar100
 
 data:
   task: cifar100_binary_pairs
