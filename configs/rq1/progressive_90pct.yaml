@@ -39,9 +39,9 @@ progressive:
   rerandomize: false
   fixed_target_sparsity: true
   prune_milestones:
-    - epoch: 5
-      target_sparsity: 0.297
-    - epoch: 10
-      target_sparsity: 0.594
-    - epoch: 15
+    - epoch: 13
+      target_sparsity: 0.3
+    - epoch: 26
+      target_sparsity: 0.6
+    - epoch: 39
       target_sparsity: 0.9
