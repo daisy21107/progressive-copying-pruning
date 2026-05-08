@@ -14,15 +14,17 @@ data:
   noise_mode: fixed
   noise_seed: 2026
   label_noise: 0.0
+  label_noise: 0.0
 
 model:
   in_channels: 3
   width: 48
   hidden: 192
+  hidden: 192
   shared_encoder: true
 
 lr: 0.0002
 weight_decay: 0.0001
-epochs: 30
+epochs: 20
 
 checkpoint_name: teacher.pt
