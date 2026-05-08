@@ -21,6 +21,6 @@ model:
   shared_encoder: true
 
 lr: 0.0005
-epochs: 20
+epochs: 10
 
 checkpoint_name: teacher.pt
