@@ -16,9 +16,11 @@ data:
 
 model:
   in_channels: 3
-  width: 32
-  hidden: 128
+  width: 48
+  hidden: 192 
   shared_encoder: true
 
 lr: 0.001
-epochs: 15
+epochs: 20
+
+checkpoint_name: teacher.pt

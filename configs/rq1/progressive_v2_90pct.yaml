@@ -18,8 +18,8 @@ teacher_ckpt: runs/teacher_cifar100/teacher.pt
 
 teacher_model:
   in_channels: 3
-  width: 32
-  hidden: 128
+  width: 48
+  hidden: 192
   shared_encoder: true
 
 student_model:

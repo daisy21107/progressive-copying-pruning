@@ -1,16 +1,3 @@
-"""
-Teacher Model Training
-
-Trains a teacher model on the target task to convergence (ground-truth labels only).
-
-The trained teacher serves as the reference for knowledge distillation experiments.
-Teacher weights are frozen and used as target logits during student training.
-
-Outputs:
-- Trained teacher checkpoint (teacher.pt)
-- Log of training metrics (metrics.csv)
-"""
-
 from typing import Dict, Any
 import os
 import torch

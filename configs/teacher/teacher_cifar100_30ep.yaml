@@ -1,6 +1,6 @@
 seed: 42
 device: auto
-out_dir: runs/teacher_cifar100_30ep
+out_dir: runs/teacher_convergence_30ep
 
 data:
   task: cifar100_binary_pairs
@@ -16,9 +16,11 @@ data:
 
 model:
   in_channels: 3
-  width: 32
-  hidden: 128
+  width: 48 
+  hidden: 192 
   shared_encoder: true
 
 lr: 0.001
 epochs: 30
+
+checkpoint_name: teacher.pt
