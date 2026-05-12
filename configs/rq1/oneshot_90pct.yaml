@@ -31,7 +31,7 @@ student_model:
 lr: 0.001
 epochs: 40
 temperature: 2.0
-target_sparsity: 0.9
+target_sparsity: 0.95
 compute_cka: true
 
 posthoc_prune:

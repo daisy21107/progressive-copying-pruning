@@ -52,4 +52,4 @@ progressive:
     - epoch: 30
       target_sparsity: 0.771
     - epoch: 35
-      target_sparsity: 0.9
+      target_sparsity: 0.95
