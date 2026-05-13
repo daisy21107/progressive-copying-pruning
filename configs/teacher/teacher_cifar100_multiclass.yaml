@@ -1,0 +1,30 @@
+seed: 42
+device: auto
+out_dir: runs/teacher_cifar100_multiclass
+
+data:
+  task: cifar100_multiclass
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  selected_superclasses:
+    - aquatic_mammals
+    - fish
+    - flowers
+    - food_containers
+    - fruit_and_vegetables
+    - household_electrical
+    - household_furniture
+    - insects
+    - large_carnivores
+    - vehicles_1
+
+model:
+  arch: resnet18_cifar
+  in_channels: 3
+
+lr: 0.0002
+weight_decay: 0.0001
+epochs: 20
+
+checkpoint_name: teacher.pt

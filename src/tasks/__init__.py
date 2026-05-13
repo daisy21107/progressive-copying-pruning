@@ -1,5 +1,6 @@
 from .dual_mnist import get_dataloaders as get_mnist_dataloaders
 from .cifar100_pairs import get_dataloaders as get_cifar100_dataloaders
+from .cifar100_multiclass import get_dataloaders as get_cifar100_multiclass_dataloaders
 
 
 def get_dataloaders(cfg):
@@ -10,6 +11,8 @@ def get_dataloaders(cfg):
 		return get_mnist_dataloaders(cfg)
 	if task_name == "cifar100_binary_pairs":
 		return get_cifar100_dataloaders(cfg)
+	if task_name == "cifar100_multiclass":
+		return get_cifar100_multiclass_dataloaders(cfg)
 
 	raise ValueError(f"Unknown data.task: {task_name}")
 

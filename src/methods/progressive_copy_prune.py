@@ -24,8 +24,9 @@ from torch.optim import Adam
 from tqdm import tqdm
 
 from src.tasks import get_dataloaders
-from src.models.cnn_pair import PairClassifier
 from src.utils.train_utils import get_device, CSVLogger
+from src.utils.batch_utils import unpack_batch, forward_logits
+from src.utils.model_factory import build_classifier
 from src.metrics.fidelity import kl_teacher_student, fidelity_metrics, probability_mse
 from src.metrics.repsim import compute_cka_similarity
 from src.methods.pruning import (
@@ -97,18 +98,7 @@ def run(cfg: Dict[str, Any], out_dir: str):
 
     teacher = load_teacher(cfg, device, num_classes)
 
-    student_cfg = cfg.get("student_model", cfg.get("model", {}))
-    width = int(student_cfg.get("width", 32))
-    hidden = int(student_cfg.get("hidden", 128))
-    shared = bool(student_cfg.get("shared_encoder", True))
-    in_channels = int(student_cfg.get("in_channels", 1))
-    student = PairClassifier(
-        num_classes=num_classes,
-        width=width,
-        hidden=hidden,
-        shared_encoder=shared,
-        in_channels=in_channels,
-    ).to(device)
+    student = build_classifier(cfg, num_classes, role="student").to(device)
 
     optim = Adam(student.parameters(), lr=float(cfg.get("lr", 1e-3)))
     epochs = int(cfg.get("epochs", 20))
@@ -163,12 +153,13 @@ def run(cfg: Dict[str, Any], out_dir: str):
         student.train()
         total_kl = 0.0
         n_batches = 0
-        for x1, x2, _y in tqdm(train_loader, desc=f"Prog E{epoch}"):
-            x1, x2 = x1.to(device), x2.to(device)
+        for batch in tqdm(train_loader, desc=f"Prog E{epoch}"):
+            inputs, _y = unpack_batch(batch)
+            inputs = tuple(t.to(device) for t in inputs)
             optim.zero_grad()
             with torch.no_grad():
-                t_logits = teacher(x1, x2)
-            s_logits = student(x1, x2)
+                t_logits = forward_logits(teacher, inputs)
+            s_logits = forward_logits(student, inputs)
             loss = kl_teacher_student(t_logits, s_logits, T)
             loss.backward()
             optim.step()
@@ -187,10 +178,12 @@ def run(cfg: Dict[str, Any], out_dir: str):
         total = 0
         n_val = 0
         with torch.no_grad():
-            for x1, x2, y in tqdm(test_loader, desc=f"Fidelity E{epoch}"):
-                x1, x2, y = x1.to(device), x2.to(device), y.to(device)
-                t_logits = teacher(x1, x2)
-                s_logits = student(x1, x2)
+            for batch in tqdm(test_loader, desc=f"Fidelity E{epoch}"):
+                inputs, y = unpack_batch(batch)
+                inputs = tuple(t.to(device) for t in inputs)
+                y = y.to(device)
+                t_logits = forward_logits(teacher, inputs)
+                s_logits = forward_logits(student, inputs)
                 m = fidelity_metrics(t_logits, s_logits, T)
                 fid_kl += m["kl"]
                 fid_mse += m["logit_mse"]

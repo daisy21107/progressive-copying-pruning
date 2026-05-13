@@ -6,8 +6,9 @@ from torch.optim import Adam
 from tqdm import tqdm
 
 from src.tasks import get_dataloaders
-from src.models.cnn_pair import PairClassifier
 from src.utils.train_utils import get_device, CSVLogger
+from src.utils.batch_utils import unpack_batch, forward_logits
+from src.utils.model_factory import build_classifier
 from src.methods.pruning import (
     set_global_sparsity,
     set_global_sparsity_absolute,
@@ -43,19 +44,7 @@ def run(cfg: Dict[str, Any], out_dir: str):
     device = get_device(cfg)
     train_loader, test_loader, num_classes = get_dataloaders(cfg)
 
-    model_cfg = cfg.get("model", {})
-    width = int(model_cfg.get("width", 32))
-    hidden = int(model_cfg.get("hidden", 128))
-    shared = bool(model_cfg.get("shared_encoder", True))
-    in_channels = int(model_cfg.get("in_channels", 1))
-
-    model = PairClassifier(
-        num_classes=num_classes,
-        width=width,
-        hidden=hidden,
-        shared_encoder=shared,
-        in_channels=in_channels,
-    ).to(device)
+    model = build_classifier(cfg, num_classes, role="model").to(device)
     criterion = nn.CrossEntropyLoss()
     optim = Adam(model.parameters(), lr=float(cfg.get("lr", 1e-3)))
     epochs = int(cfg.get("epochs", 10))
@@ -70,10 +59,12 @@ def run(cfg: Dict[str, Any], out_dir: str):
         total_loss = 0.0
         total_acc = 0.0
         n_batches = 0
-        for x1, x2, y in tqdm(train_loader, desc=f"Train E{epoch}"):
-            x1, x2, y = x1.to(device), x2.to(device), y.to(device)
+        for batch in tqdm(train_loader, desc=f"Train E{epoch}"):
+            inputs, y = unpack_batch(batch)
+            inputs = tuple(t.to(device) for t in inputs)
+            y = y.to(device)
             optim.zero_grad()
-            logits = model(x1, x2)
+            logits = forward_logits(model, inputs)
             loss = criterion(logits, y)
             loss.backward()
             optim.step()
@@ -90,9 +81,11 @@ def run(cfg: Dict[str, Any], out_dir: str):
         val_acc = 0.0
         n_val = 0
         with torch.no_grad():
-            for x1, x2, y in tqdm(test_loader, desc=f"Val E{epoch}"):
-                x1, x2, y = x1.to(device), x2.to(device), y.to(device)
-                logits = model(x1, x2)
+            for batch in tqdm(test_loader, desc=f"Val E{epoch}"):
+                inputs, y = unpack_batch(batch)
+                inputs = tuple(t.to(device) for t in inputs)
+                y = y.to(device)
+                logits = forward_logits(model, inputs)
                 loss = criterion(logits, y)
                 val_loss += loss.item()
                 val_acc += accuracy(logits, y)
@@ -131,9 +124,11 @@ def run(cfg: Dict[str, Any], out_dir: str):
         val_acc = 0.0
         n_val = 0
         with torch.no_grad():
-            for x1, x2, y in tqdm(test_loader, desc="Val PostPrune"):
-                x1, x2, y = x1.to(device), x2.to(device), y.to(device)
-                logits = model(x1, x2)
+            for batch in tqdm(test_loader, desc="Val PostPrune"):
+                inputs, y = unpack_batch(batch)
+                inputs = tuple(t.to(device) for t in inputs)
+                y = y.to(device)
+                logits = forward_logits(model, inputs)
                 loss = criterion(logits, y)
                 val_loss += loss.item()
                 val_acc += accuracy(logits, y)

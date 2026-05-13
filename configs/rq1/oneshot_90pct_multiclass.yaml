@@ -1,0 +1,42 @@
+seed: 42
+device: auto
+out_dir: runs/oneshot_90pct_multiclass
+
+data:
+  task: cifar100_multiclass
+  root: ./data
+  batch_size: 128
+  num_workers: 0
+  selected_superclasses:
+    - aquatic_mammals
+    - fish
+    - flowers
+    - food_containers
+    - fruit_and_vegetables
+    - household_electrical
+    - household_furniture
+    - insects
+    - large_carnivores
+    - vehicles_1
+
+teacher_ckpt: runs/teacher_cifar100_multiclass/teacher.pt
+
+teacher_model:
+  arch: resnet18_cifar
+  in_channels: 3
+
+student_model:
+  arch: resnet18_cifar
+  in_channels: 3
+
+lr: 0.001
+epochs: 40
+temperature: 2.0
+target_sparsity: 0.95
+compute_cka: true
+
+posthoc_prune:
+  enabled: true
+  target_sparsity: 0.9
+  fixed_target_sparsity: true
+  rerandomize: false

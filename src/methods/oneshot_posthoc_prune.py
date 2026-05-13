@@ -11,15 +11,16 @@ from torch.optim import Adam
 from tqdm import tqdm
 
 from src.tasks import get_dataloaders
-from src.models.cnn_pair import PairClassifier
 from src.utils.train_utils import get_device, CSVLogger
+from src.utils.batch_utils import unpack_batch, forward_logits
+from src.utils.model_factory import build_classifier
 from src.metrics.fidelity import kl_teacher_student, fidelity_metrics
 from src.metrics.repsim import compute_cka_similarity
 from src.methods.pruning import set_global_sparsity, current_global_sparsity
 
-def load_teacher(cfg: Dict[str, Any], device: torch.device, num_classes: int) -> PairClassifier:
+def load_teacher(cfg: Dict[str, Any], device: torch.device, num_classes: int):
     """Load pretrained teacher model."""
-    teacher = PairClassifier(**cfg['teacher_model'])
+    teacher = build_classifier(cfg, num_classes, role="teacher")
     ckpt = torch.load(cfg['teacher_ckpt'], map_location=device)
     teacher.load_state_dict(ckpt['model_state'])
     teacher.to(device)
@@ -39,11 +40,13 @@ def validate(student, teacher, test_loader, device, temperature):
     batches = 0
     
     with torch.no_grad():
-        for x1, x2, labels in test_loader:
-            x1, x2, labels = x1.to(device), x2.to(device), labels.to(device)
-            
-            student_logits = student(x1, x2)
-            teacher_logits = teacher(x1, x2)
+        for batch in test_loader:
+            inputs, labels = unpack_batch(batch)
+            inputs = tuple(t.to(device) for t in inputs)
+            labels = labels.to(device)
+
+            student_logits = forward_logits(student, inputs)
+            teacher_logits = forward_logits(teacher, inputs)
             
             # Fidelity metrics
             metrics = fidelity_metrics(teacher_logits, student_logits, temperature)
@@ -88,7 +91,7 @@ def run(cfg: Dict[str, Any], out_dir: str) -> None:
     
     # Models
     teacher = load_teacher(cfg, device, num_classes)
-    student = PairClassifier(**cfg['student_model'])
+    student = build_classifier(cfg, num_classes, role="student")
     student.to(device)
     
     # Training params
@@ -118,13 +121,15 @@ def run(cfg: Dict[str, Any], out_dir: str) -> None:
         train_batches = 0
         
         pbar = tqdm(train_loader, desc=f"Dense E{epoch}/{dense_epochs}")
-        for x1, x2, labels in pbar:
-            x1, x2, labels = x1.to(device), x2.to(device), labels.to(device)
-            
-            student_logits = student(x1, x2)
-            
+        for batch in pbar:
+            inputs, labels = unpack_batch(batch)
+            inputs = tuple(t.to(device) for t in inputs)
+            labels = labels.to(device)
+
+            student_logits = forward_logits(student, inputs)
+
             with torch.no_grad():
-                teacher_logits = teacher(x1, x2)
+                teacher_logits = forward_logits(teacher, inputs)
             
             loss = kl_teacher_student(teacher_logits, student_logits, temperature)
             
@@ -185,13 +190,15 @@ def run(cfg: Dict[str, Any], out_dir: str) -> None:
         train_batches = 0
         
         pbar = tqdm(train_loader, desc=f"Finetune E{epoch}/{total_epochs}")
-        for x1, x2, labels in pbar:
-            x1, x2, labels = x1.to(device), x2.to(device), labels.to(device)
-            
-            student_logits = student(x1, x2)
-            
+        for batch in pbar:
+            inputs, labels = unpack_batch(batch)
+            inputs = tuple(t.to(device) for t in inputs)
+            labels = labels.to(device)
+
+            student_logits = forward_logits(student, inputs)
+
             with torch.no_grad():
-                teacher_logits = teacher(x1, x2)
+                teacher_logits = forward_logits(teacher, inputs)
             
             loss = kl_teacher_student(teacher_logits, student_logits, temperature)
             
