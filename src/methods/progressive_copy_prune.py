@@ -48,18 +48,7 @@ def load_teacher(cfg: Dict[str, Any], device: torch.device, num_classes: int) ->
     Returns:
         Frozen teacher model in eval mode.
     """
-    model_cfg = cfg.get("teacher_model", cfg.get("model", {}))
-    width = int(model_cfg.get("width", 32))
-    hidden = int(model_cfg.get("hidden", 128))
-    shared = bool(model_cfg.get("shared_encoder", True))
-    in_channels = int(model_cfg.get("in_channels", 1))
-    teacher = PairClassifier(
-        num_classes=num_classes,
-        width=width,
-        hidden=hidden,
-        shared_encoder=shared,
-        in_channels=in_channels,
-    ).to(device)
+    teacher = build_classifier(cfg, num_classes, role="teacher").to(device)
     ckpt_path = cfg.get("teacher_ckpt")
     if ckpt_path is None or not os.path.exists(ckpt_path):
         raise FileNotFoundError("teacher_ckpt not found; train a teacher first.")
