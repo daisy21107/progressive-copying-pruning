@@ -37,6 +37,6 @@ compute_cka: true
 
 posthoc_prune:
   enabled: true
-  target_sparsity: 0.9
+  target_sparsity: 0.95
   fixed_target_sparsity: true
   rerandomize: false

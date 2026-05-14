@@ -35,14 +35,15 @@ temperature: 2.0
 compute_cka: true
 
 progressive:
-  prune_per_epoch: 0.05
-  target_sparsity: 0.9
-  rerandomize: false
+  target_sparsity: 0.95
   fixed_target_sparsity: true
+  rerandomize: false
   prune_milestones:
-    - epoch: 13
-      target_sparsity: 0.3
-    - epoch: 26
-      target_sparsity: 0.6
-    - epoch: 39
+    - epoch: 8 
+      target_sparsity: 0.45
+    - epoch: 16 
+      target_sparsity: 0.68
+    - epoch: 24 
+      target_sparsity: 0.82
+    - epoch: 32 
       target_sparsity: 0.95
